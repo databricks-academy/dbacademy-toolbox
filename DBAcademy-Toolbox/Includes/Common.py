@@ -18,47 +18,47 @@ from dbacademy.dbrest import DBAcademyRestClient
 client = DBAcademyRestClient()
 
 courses_map = {
-    "advanced-data-engineering-with-databricks": {
+    "Advanced Data Engineering with Databricks": {
         "code": "adewd",
         "name": "Advanced Data Engineering with Databricks",
         "source-repo": "advanced-data-engineering-with-databricks-source"
     },
-    "advanced-machine-learning-with-databricks": {
+    "Advanced Machine Learning with Databricks": {
         "code": "amlwd",
         "name": "Advanced Machine Learning with Databricks",
         "source-repo": "advanced-machine-learning-with-databricks-source",
     },
-    "apache-spark-programming-with-databricks": {
+    "Apache Spark Programming with Databricks": {
         "code": "aspwd",
         "name": "Apache Spark Programming with Databricks",
         "source-repo": "apache-spark-programming-with-databricks-source",
     },
-    "data-analysis-with-databricks": {
+    "Data Analysis with Databricks": {
         "code": "dawd",
         "name": "Data Analysis with Databricks",
         "source-repo": "data-analysis-with-databricks-source",
     },
-    "data-engineering-with-databricks": {
+    "Data Engineering with Databricks": {
         "code": "dewd",
         "name": "Data Engineering with Databricks",
         "source-repo": "data-engineering-with-databricks-source",
     },
-    "deep-learning-with-databricks": {
+    "Deep Learning with Databricks": {
         "code": "dlwd",
         "name": "Deep Learning with Databricks",
         "source-repo": "deep-learning-with-databricks-source",
     },
-    "just-enough-python-for-spark": {
+    "Just Enough Python for Spark": {
         "code": "jepfs",
         "name": "Just Enough Python For Spark",
         "source-repo": "just-enough-python-for-spark-source",
     },
-    "ml-in-production": {
+    "ML in Production": {
         "code": "mlip",
         "name": "ML in Production",
         "source-repo": "ml-in-production-source",
     },
-    "scalable-machine-learning-with-apache-spark": {
+    "Scalable Machine Learning with Apache Spark": {
         "code": "smlwas",
         "name": "Scalable Machine Learning with Apache Spark",
         "source-repo": "scalable-machine-learning-with-apache-spark-source",
