@@ -14,6 +14,16 @@
 # MAGIC %md
 # MAGIC # Manage SQL Endpoints
 # MAGIC The purpose of this notebook is to create, start, stop and delete endpoints for each user in a workspace
+# MAGIC 
+# MAGIC Known usages include:
+# MAGIC * Data Analysis with Databricks
+
+# COMMAND ----------
+
+# MAGIC %md ## Initialize Notebook
+# MAGIC Run the following cell to initialize this notebook.
+# MAGIC 
+# MAGIC Once initialized, select your options from the widgets above.
 
 # COMMAND ----------
 

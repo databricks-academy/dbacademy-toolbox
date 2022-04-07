@@ -14,6 +14,9 @@
 # MAGIC %md
 # MAGIC # Manage Databases
 # MAGIC The purpose of this notebook is to create and drop databases for each user in a workspace
+# MAGIC 
+# MAGIC Known usages include:
+# MAGIC * Data Analysis with Databricks
 
 # COMMAND ----------
 

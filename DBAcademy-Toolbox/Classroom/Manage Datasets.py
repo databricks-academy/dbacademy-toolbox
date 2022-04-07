@@ -14,6 +14,9 @@
 # MAGIC %md
 # MAGIC # Manage Datasets
 # MAGIC The purpose of this notebook is to download and install datasets used by each course
+# MAGIC 
+# MAGIC Known usages include:
+# MAGIC * Data Analysis with Databricks
 
 # COMMAND ----------
 

@@ -14,6 +14,16 @@
 # MAGIC %md
 # MAGIC # Manage Users
 # MAGIC The purpose of this notebook is to create and delete the specified list of users
+# MAGIC 
+# MAGIC Known usages include:
+# MAGIC * None
+
+# COMMAND ----------
+
+# MAGIC %md ## Initialize Notebook
+# MAGIC Run the following cell to initialize this notebook.
+# MAGIC 
+# MAGIC Once initialized, select your options from the widgets above.
 
 # COMMAND ----------
 
