@@ -7,40 +7,20 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./Includes/Common
+# MAGIC %run ../Includes/Common
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC # Manage Databases
-# MAGIC The purpose of this notebook is to create and drop databases for each user in a workspace
+# MAGIC # Manage Users
+# MAGIC The purpose of this notebook is to create and delete the specified list of users
 
 # COMMAND ----------
 
 # Update this list with the email addresses (usernames)
 # that should be managed by this script (e.g. created)
 usernames = [
-        "andras.fulop@databricks.com",
-        "brooke.wenig@databricks.com",
-        "charles.harding@databricks.com",
-        "chengyin.eng@databricks.com",
-        "conor.murphy@databricks.com",
-        "david.harris@databricks.com",
-        "gray.gwizdz@databricks.com",
-        "guenia.izquierdo@databricks.com",
-        "joel.budgor@databricks.com",
-        "joseph.kambourakis@databricks.com",
-        "ken.jones@databricks.com",
-        "kornel.kovacs@databricks.com",
-        "lisa.ritcher@databricks.com",
-        "mark.ott@databricks.com",
-        "marygrace.moesta@databricks.com",
-        "miklos.toth@databricks.com",
-        "patrick.putnam@databricks.com",
-        "richard.smith@databricks.com",
-        "ronald.daskevich@databricks.com",
-        "yinxi@databricks.com",
-        "zoltan.toth@databricks.com",
+    "change.me@example.com"
 ]
 
 # COMMAND ----------
@@ -69,6 +49,8 @@ for user in users:
 # MAGIC Create each user specified in the usernames list
 
 # COMMAND ----------
+
+assert "change.me@example.com" not in usernames, "Please update the list of usernames before executing this task."
 
 for username in usernames:
     user = client.scim().users().get_by_username(username)

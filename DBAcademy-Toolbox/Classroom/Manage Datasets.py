@@ -7,13 +7,20 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./Includes/Common
+# MAGIC %run ../Includes/Common
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC # Manage Datasets
 # MAGIC The purpose of this notebook is to download and install datasets used by each course
+
+# COMMAND ----------
+
+# MAGIC %md ## Initialize Notebook
+# MAGIC Run the following cell to initialize this notebook.
+# MAGIC 
+# MAGIC Once initialized, select your options from the widgets above.
 
 # COMMAND ----------
 

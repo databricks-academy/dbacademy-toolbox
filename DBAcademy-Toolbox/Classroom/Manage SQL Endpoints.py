@@ -7,7 +7,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./Includes/Common
+# MAGIC %run ../Includes/Common
 
 # COMMAND ----------
 

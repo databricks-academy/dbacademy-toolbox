@@ -7,13 +7,20 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./Includes/Common
+# MAGIC %run ../Includes/Common
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC # Manage Databases
 # MAGIC The purpose of this notebook is to create and drop databases for each user in a workspace
+
+# COMMAND ----------
+
+# MAGIC %md ## Initialize Notebook
+# MAGIC Run the following cell to initialize this notebook.
+# MAGIC 
+# MAGIC Once initialized, select your options from the widgets above.
 
 # COMMAND ----------
 
