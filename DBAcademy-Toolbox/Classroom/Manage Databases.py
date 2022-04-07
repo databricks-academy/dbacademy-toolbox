@@ -33,11 +33,13 @@ from dbacademy.dbrest.sql.endpoints import *
 
 all_courses = [""]
 all_courses.extend(courses_map.keys())
+all_courses.sort()
 dbutils.widgets.combobox("course", "", all_courses, "Course")
 course = dbutils.widgets.get("course")
 
-all_usernames = ["All Users"]
-all_usernames.extend([r.get("userName") for r in client.scim().users().list()])
+all_usernames = [r.get("userName") for r in client.scim().users().list()]
+all_usernames.sort()
+all_usernames.insert(0, "All Users")
 dbutils.widgets.multiselect("usernames", "All Users", all_usernames, "Users")
 usernames = dbutils.widgets.get("usernames")
 

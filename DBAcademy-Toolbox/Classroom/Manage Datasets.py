@@ -33,6 +33,7 @@ dbutils.widgets.removeAll()
 
 all_courses = [""]
 all_courses.extend(courses_map.keys())
+all_courses.sort()
 dbutils.widgets.combobox("course", "", all_courses, "Course")
 course = dbutils.widgets.get("course")
 assert len(course) > 0, "Please select a course"
