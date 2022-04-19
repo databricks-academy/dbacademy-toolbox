@@ -56,7 +56,7 @@ print(f"Course Code: {course_code}")
 users = client.scim().users().list() if "All Users" in usernames else client.scim().users().to_users_list(usernames)
 usernames = [u.get("userName") for u in users]
 
-naming_template="da-{course}-{da_name}@{da_hash}"
+naming_template="da-{da_name}@{da_hash}-{course}"
 naming_params={"course": course_code}
 
 print("\nThis notebook's tasks will be applied to the following users:")
