@@ -67,8 +67,12 @@ courses_map = {
 
 # COMMAND ----------
 
-def to_db_name(username, naming_template, naming_params):
+def to_db_name(course_code, username):
     import re
+    
+    naming_template="da-{da_name}@{da_hash}-{course}"
+    naming_params={"course": course_code}
+    
     if "{da_hash}" in naming_template:
         assert naming_params.get("course", None) is not None, "The template is employing da_hash which requires course to be specified in naming_params"
         course = naming_params["course"]

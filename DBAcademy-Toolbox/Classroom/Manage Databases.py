@@ -56,9 +56,6 @@ print(f"Course Code: {course_code}")
 users = client.scim().users().list() if "All Users" in usernames else client.scim().users().to_users_list(usernames)
 usernames = [u.get("userName") for u in users]
 
-naming_template="da-{da_name}@{da_hash}-{course}"
-naming_params={"course": course_code}
-
 print("\nThis notebook's tasks will be applied to the following users:")
 for username in usernames:
     print(f"  {username}")
@@ -76,7 +73,7 @@ dbutils.notebook.exit("Precluding Run-All")
 # COMMAND ----------
 
 for username in usernames:
-    db_name = to_db_name(username, naming_template, naming_params)
+    db_name = to_db_name(course_code, username)
     db_path = f"dbfs:/mnt/dbacademy-users/{username}/{course_code}/database.db"
     
     print(f"Creating the database \"{db_name}\"\n   for \"{username}\" \n   at \"{db_path}\"\n")
@@ -93,7 +90,7 @@ for username in usernames:
 
 sql = ""
 for username in usernames:
-    db_name = to_db_name(username, naming_template, naming_params)
+    db_name = to_db_name(course_code, username)
     sql += f"GRANT ALL PRIVILEGES ON DATABASE `{db_name}` TO `{username}`;\n"
     sql += f"GRANT ALL PRIVILEGES ON ANY FILE TO `{username}`;\n"
     sql += f"ALTER DATABASE {db_name} OWNER TO `{username}`;\n"    
@@ -122,7 +119,7 @@ displayHTML(f"""Query created - follow this link to execute the grants in Databr
 
 for user in users:
     username = user.get("userName")
-    db_name = to_db_name(username, naming_template, naming_params)
+    db_name = to_db_name(course_code, username)
     
     print(f"Dropping the database \"{db_name}\"")
     spark.sql(f"DROP DATABASE IF EXISTS {db_name} CASCADE;")
