@@ -54,7 +54,7 @@ print(f"Course Code: {course_code}")
 
 users = client.scim().users().list() if "All Users" in usernames else client.scim().users().to_users_list(usernames)
 
-naming_template="da-{course}-{da_name}@{da_hash}"
+naming_template="da-{da_name}@{da_hash}-{course}"
 naming_params={"course": course_code}
 
 print("\nThis notebook's tasks will be applied to the following users:")
@@ -72,12 +72,15 @@ dbutils.notebook.exit("Precluding Run-All")
 
 # COMMAND ----------
 
-client.sql().endpoints().create_user_endpoints(naming_template=naming_template,      # Required
-                                               naming_params=naming_params,          # Required
-                                               cluster_size = CLUSTER_SIZE_2X_SMALL, # Required
-                                               enable_serverless_compute = False,    # Required
-                                               tags = { "dbacademy": course_name },  # Prototyping Management
-                                               users=users)                          # Restrict to the specified list of users
+client.sql().endpoints().create_user_endpoints(naming_template=naming_template,             # Required
+                                               naming_params=naming_params,                 # Required
+                                               cluster_size = CLUSTER_SIZE_2X_SMALL,        # Required
+                                               enable_serverless_compute = False,           # Required
+                                               tags = {                                     
+                                                   "dbacademy.course": course_name,         # Tag the name of the course
+                                                   "dbacademy.source": "DBAcadmey Toolbox"  # Tag the name of the course
+                                               },  
+                                               users=users)                                 # Restrict to the specified list of users
 # See docs for more parameters
 # print(client.sql().endpoints().create_user_endpoints.__doc__)
 
