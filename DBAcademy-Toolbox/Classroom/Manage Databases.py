@@ -7,10 +7,6 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../Includes/Common
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC # Manage Databases
 # MAGIC The purpose of this notebook is to create and drop databases for each user in a workspace
@@ -21,47 +17,37 @@
 # COMMAND ----------
 
 # MAGIC %md ## Initialize Notebook
-# MAGIC Run the following cell to initialize this notebook.
+# MAGIC Run the following two cells to initialize this notebook.
 # MAGIC 
 # MAGIC Once initialized, select your options from the widgets above.
 
 # COMMAND ----------
 
-import json
-from dbacademy import dbgems
-from dbacademy.dbrest.sql.endpoints import *
+# MAGIC %run ../Includes/Common
 
-all_courses = [""]
-all_courses.extend(courses_map.keys())
-all_courses.sort()
-dbutils.widgets.combobox("course", "", all_courses, "Course")
-course = dbutils.widgets.get("course")
+# COMMAND ----------
 
-all_usernames = [r.get("userName") for r in client.scim().users().list()]
-all_usernames.sort()
-all_usernames.insert(0, "All Users")
-dbutils.widgets.multiselect("usernames", "All Users", all_usernames, "Users")
-usernames = dbutils.widgets.get("usernames")
+init_course()
+init_usernames()
 
-assert len(course) > 0, "Please select a course"
-assert len(usernames) > 0, "Please select either All Users or a valid subset of users"
+# COMMAND ----------
 
-course_name = courses_map[course].get("name")
-course_code = courses_map[course].get("code")
-usernames = usernames.split(",")
+# MAGIC %md ## Review Your Selections
+# MAGIC Run the following cell to review your selections:
 
-print(f"Course Name: {course_name}")
-print(f"Course Code: {course_code}")
+# COMMAND ----------
 
-users = client.scim().users().list() if "All Users" in usernames else client.scim().users().to_users_list(usernames)
-usernames = [u.get("userName") for u in users]
+print(f"Course Code: {get_course_code()}")
+print(f"Course Name: {get_course_name()}")
 
 print("\nThis notebook's tasks will be applied to the following users:")
-for username in usernames:
+for username in get_usernames():
     print(f"  {username}")
 
 # COMMAND ----------
 
+# We don't want to accidently run the following tasks
+# so we will be aborting any Run-All operations by exiting
 dbutils.notebook.exit("Precluding Run-All")
 
 # COMMAND ----------
@@ -72,9 +58,9 @@ dbutils.notebook.exit("Precluding Run-All")
 
 # COMMAND ----------
 
-for username in usernames:
-    db_name = to_db_name(course_code, username)
-    db_path = f"dbfs:/mnt/dbacademy-users/{username}/{course_code}/database.db"
+for username in get_usernames():
+    db_name = to_db_name(get_course_code(), username)
+    db_path = f"dbfs:/mnt/dbacademy-users/{username}/{get_course_code()}/database.db"
     
     print(f"Creating the database \"{db_name}\"\n   for \"{username}\" \n   at \"{db_path}\"\n")
     spark.sql(f"DROP DATABASE IF EXISTS {db_name} CASCADE;")
@@ -89,14 +75,14 @@ for username in usernames:
 # COMMAND ----------
 
 sql = ""
-for username in usernames:
-    db_name = to_db_name(course_code, username)
+for username in get_usernames():
+    db_name = to_db_name(get_course_code(), username)
     sql += f"GRANT ALL PRIVILEGES ON DATABASE `{db_name}` TO `{username}`;\n"
     sql += f"GRANT ALL PRIVILEGES ON ANY FILE TO `{username}`;\n"
     sql += f"ALTER DATABASE {db_name} OWNER TO `{username}`;\n"    
     sql += "\n"
     
-query_name = f"Instructor - Grant All Users - {course_name}"
+query_name = f"Instructor - Grant All Users - {get_course_name()}"
 query = client.sql().queries().get_by_name(query_name)
 if query is not None:
     client.sql().queries().delete_by_id(query.get("id"))
@@ -117,9 +103,8 @@ displayHTML(f"""Query created - follow this link to execute the grants in Databr
 
 # COMMAND ----------
 
-for user in users:
-    username = user.get("userName")
-    db_name = to_db_name(course_code, username)
+for username in get_usernames():
+    db_name = to_db_name(get_course_code(), username)
     
     print(f"Dropping the database \"{db_name}\"")
     spark.sql(f"DROP DATABASE IF EXISTS {db_name} CASCADE;")

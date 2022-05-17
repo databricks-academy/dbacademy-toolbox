@@ -7,10 +7,6 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../Includes/Common
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC # Manage SQL Endpoints
 # MAGIC The purpose of this notebook is to create, start, stop and delete endpoints for each user in a workspace
@@ -21,45 +17,32 @@
 # COMMAND ----------
 
 # MAGIC %md ## Initialize Notebook
-# MAGIC Run the following cell to initialize this notebook.
+# MAGIC Run the following two cell to initialize this notebook.
 # MAGIC 
 # MAGIC Once initialized, select your options from the widgets above.
 
 # COMMAND ----------
 
-import json
-from dbacademy.dbrest.sql.endpoints import *
+# MAGIC %run ../Includes/Common
 
-all_courses = [""]
-all_courses.extend(courses_map.keys())
-all_courses.sort()
-dbutils.widgets.combobox("course", "", all_courses, "Course")
-course = dbutils.widgets.get("course")
+# COMMAND ----------
 
-all_usernames = [r.get("userName") for r in client.scim().users().list()]
-all_usernames.sort()
-all_usernames.insert(0, "All Users")
-dbutils.widgets.multiselect("usernames", "All Users", all_usernames, "Users")
-usernames = dbutils.widgets.get("usernames")
+init_course()
+init_usernames()
 
-assert len(course) > 0, "Please select a course"
-assert len(usernames) > 0, "Please select either All Users or a valid subset of users"
+# COMMAND ----------
 
-course_name = courses_map[course].get("name")
-course_code = courses_map[course].get("code")
-usernames = usernames.split(",")
+# MAGIC %md ## Review Your Selections
+# MAGIC Run the following cell to review your selections:
 
-print(f"Course Name: {course_name}")
-print(f"Course Code: {course_code}")
+# COMMAND ----------
 
-users = client.scim().users().list() if "All Users" in usernames else client.scim().users().to_users_list(usernames)
-
-naming_template="da-{da_name}@{da_hash}-{course}"
-naming_params={"course": course_code}
+print(f"Course Code: {get_course_code()}")
+print(f"Course Name: {get_course_name()}")
 
 print("\nThis notebook's tasks will be applied to the following users:")
-for user in users:
-    print(" ", user.get("userName"))
+for username in get_usernames():
+    print(f"  {username}")
 
 # COMMAND ----------
 
@@ -73,14 +56,14 @@ dbutils.notebook.exit("Precluding Run-All")
 # COMMAND ----------
 
 client.sql().endpoints().create_user_endpoints(naming_template=naming_template,             # Required
-                                               naming_params=naming_params,                 # Required
+                                               naming_params=get_naming_params(),           # Required
                                                cluster_size = CLUSTER_SIZE_2X_SMALL,        # Required
                                                enable_serverless_compute = False,           # Required
                                                tags = {                                     
-                                                   "dbacademy.course": course_name,         # Tag the name of the course
+                                                   "dbacademy.course": get_course_name(),   # Tag the name of the course
                                                    "dbacademy.source": "DBAcadmey Toolbox"  # Tag the name of the course
                                                },  
-                                               users=users)                                 # Restrict to the specified list of users
+                                               users=get_usernames())                       # Restrict to the specified list of users
 # See docs for more parameters
 # print(client.sql().endpoints().create_user_endpoints.__doc__)
 
@@ -104,7 +87,7 @@ for endpoint in client.sql().endpoints().list():
 
 # COMMAND ----------
 
-client.sql().endpoints().start_user_endpoints(naming_template, naming_params, users)
+client.sql().endpoints().start_user_endpoints(naming_template, get_naming_params(), get_usernames())
 
 # COMMAND ----------
 
@@ -113,7 +96,7 @@ client.sql().endpoints().start_user_endpoints(naming_template, naming_params, us
 
 # COMMAND ----------
 
-client.sql().endpoints().stop_user_endpoints(naming_template, naming_params, users)
+client.sql().endpoints().stop_user_endpoints(naming_template, get_naming_params(), get_usernames())
 
 # COMMAND ----------
 
@@ -121,7 +104,7 @@ client.sql().endpoints().stop_user_endpoints(naming_template, naming_params, use
 
 # COMMAND ----------
 
-client.sql().endpoints().delete_user_endpoints(naming_template, naming_params, users)
+client.sql().endpoints().delete_user_endpoints(naming_template, get_naming_params(), get_usernames())
 
 # COMMAND ----------
 

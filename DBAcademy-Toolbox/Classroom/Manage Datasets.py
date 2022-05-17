@@ -7,10 +7,6 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../Includes/Common
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC # Manage Datasets
 # MAGIC The purpose of this notebook is to download and install datasets used by each course
@@ -21,43 +17,30 @@
 # COMMAND ----------
 
 # MAGIC %md ## Initialize Notebook
-# MAGIC Run the following cell to initialize this notebook.
+# MAGIC Run the following two cells to initialize this notebook.
 # MAGIC 
 # MAGIC Once initialized, select your options from the widgets above.
 
 # COMMAND ----------
 
-import json, time
-from dbacademy.dbrest.sql.endpoints import *
-dbutils.widgets.removeAll()
+# MAGIC %run ../Includes/Common
 
-all_courses = [""]
-all_courses.extend(courses_map.keys())
-all_courses.sort()
-dbutils.widgets.combobox("course", "", all_courses, "Course")
-course = dbutils.widgets.get("course")
-assert len(course) > 0, "Please select a course"
+# COMMAND ----------
 
-data_source_base_uri = f"wasbs://courseware@dbacademy.blob.core.windows.net/{course}"
-version_files = dbutils.fs.ls(data_source_base_uri)
+init_course()
 
-if len(version_files) == 1:
-    data_source_version = version_files[0].name[0:-1]
-    data_source_uri = version_files[0].path[0:-1]
-else:
-    all_versions = [""]
-    all_versions.extend([r.name[0:-1] for r in version_files])
-    dbutils.widgets.dropdown("version", "", all_versions, "Version")
-    data_source_version = dbutils.widgets.get("version")
-    assert len(data_source_version) > 0, "Please select the dataset version"
-    data_source_uri = f"{data_source_base_uri}/{data_source_version}"
+# COMMAND ----------
 
-course_name = courses_map[course].get("name")
-course_code = courses_map[course].get("code")
-target_dir = f"dbfs:/mnt/dbacademy-datasets/{course}/{data_source_version}"
+# MAGIC %md ## Review Your Selections
+# MAGIC Run the following cell to review your selections:
 
-print(f"Course Name: {course_name}")
-print(f"Dataset Repo: {data_source_uri}")
+# COMMAND ----------
+
+target_dir = f"dbfs:/mnt/dbacademy-datasets/{get_dataset_repo()}/{get_data_source_version()}"
+
+print(f"Course Code:      {get_course_code()}")
+print(f"Course Name:      {get_course_name()}")
+print(f"Dataset Repo:     {get_data_source_uri()}")
 print(f"Target Directory: {target_dir}")
 
 # COMMAND ----------
@@ -81,7 +64,8 @@ dbutils.fs.rm(target_dir, True)
 
 # COMMAND ----------
 
-files = dbutils.fs.ls(f"{data_source_uri}")
+files = dbutils.fs.ls(f"{get_data_source_uri()}")
+
 for i, file in enumerate(files):
     start = int(time.time())
     print(f"Installing dataset {i+1}/{len(files)}, {file.name}", end="...")

@@ -7,10 +7,6 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../Includes/Common
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC # Manage Users
 # MAGIC The purpose of this notebook is to create and delete the specified list of users
@@ -21,17 +17,17 @@
 # COMMAND ----------
 
 # MAGIC %md ## Initialize Notebook
-# MAGIC Run the following cell to initialize this notebook.
+# MAGIC Run the following two cells to initialize this notebook.
 # MAGIC 
 # MAGIC Once initialized, select your options from the widgets above.
 
 # COMMAND ----------
 
-# Update this list with the email addresses (usernames)
-# that should be managed by this script (e.g. created)
-usernames = [
-    "change.me@example.com"
-]
+# MAGIC %run ../Includes/Common
+
+# COMMAND ----------
+
+init_usernames()
 
 # COMMAND ----------
 
@@ -55,14 +51,31 @@ for user in users:
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ## Task: Delete Users
+# MAGIC Delete the selected users
+
+# COMMAND ----------
+
+for username in get_usernames():
+    client.scim().users().delete_by_username(username)
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ## Task: Create Users
 # MAGIC Create each user specified in the usernames list
 
 # COMMAND ----------
 
-assert "change.me@example.com" not in usernames, "Please update the list of usernames before executing this task."
+new_usernames = [
+    "change.me@example.com",
+]
 
-for username in usernames:
+# COMMAND ----------
+
+assert "change.me@example.com" not in new_usernames, "Please update the list of usernames before executing this task."
+
+for username in new_usernames:
     user = client.scim().users().get_by_username(username)
     if user is None:
         try:
@@ -72,6 +85,9 @@ for username in usernames:
             print(e)
     else:
         print(f"Skipping creation of the user {username}")
+        
+# Update the current set of users
+init_usernames()
 
 # COMMAND ----------
 

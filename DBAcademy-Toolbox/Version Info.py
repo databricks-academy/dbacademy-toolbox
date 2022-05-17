@@ -10,8 +10,8 @@
 # MAGIC %md # Project Information
 # MAGIC 
 # MAGIC * Name: **DBAcademy Toolbox**
-# MAGIC * Version:  **0.1.6**
-# MAGIC * Built On: **Apr 21, 2022 at 14:56:35 UTC**
+# MAGIC * Version:  **0.1.7**
+# MAGIC * Built On: **May 17, 2022 at 22:31:58 UTC**
 
 # COMMAND ----------
 
